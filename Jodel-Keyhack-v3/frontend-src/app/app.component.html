@@ -1,0 +1,52 @@
+<div class="container" nz-row nzType="flex" nzAlign="middle">
+  <div nz-col nzSpan="24">
+    <div nz-row nzType="flex" nzJustify="center">
+      <div nz-col nzSpan="24">
+        <nz-upload
+          nzType="drag"
+          nzAction="/api/upload"
+          nzAccept=".apk"
+          [nzFileList]="fileList"
+          (nzChange)="fileChange($event)">
+          <p class="ant-upload-drag-icon"><i nz-icon type="inbox"></i></p>
+          <p class="ant-upload-text">Upload Jodel APK</p>
+          <p class="ant-upload-hint">Just drag and drop the APK file</p>
+        </nz-upload>
+      </div>
+    </div>
+    <ng-container nzType="flex" nzJustify="center" *ngIf="successfulExtraction">
+      <nz-divider nzText="APK Info"></nz-divider>
+      <nz-card style="width:550px;">
+        <div nz-row>
+          <div nz-col nzSpan="12">Offical Jodel APK</div>
+          <div nz-col nzSpan="12"> {{ extractionData.is_jodel_signature ? "Yes" : "No" }}
+          </div>
+        </div>
+        <div nz-row>
+          <div nz-col nzSpan="12">Package name</div>
+          <div nz-col nzSpan="12">{{ extractionData.package }}</div>
+        </div>
+        <div nz-row>
+          <div nz-col nzSpan="12">Version name</div>
+          <div nz-col nzSpan="12">{{ extractionData.version_name }}</div>
+        </div>
+        <div nz-row>
+          <div nz-col nzSpan="12">Version code</div>
+          <div nz-col nzSpan="12">{{ extractionData.version_code }}</div>
+        </div>
+        <div nz-row>
+          <div nz-col nzSpan="12">HMAC key</div>
+          <div nz-col nzSpan="12">
+            <app-copy-input [value]="extractionData.hmac_key"></app-copy-input>
+          </div>
+        </div>
+        <div nz-row>
+          <div nz-col nzSpan="12">Key status</div>
+          <div nz-col nzSpan="12">
+            {{ extractionData.key_status.working ? "Working" : "Not working" }}
+          </div>
+        </div>
+      </nz-card>
+    </ng-container>
+  </div>
+</div>

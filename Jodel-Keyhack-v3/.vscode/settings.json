@@ -1,0 +1,4 @@
+{
+    "python.venvPath": "venv",
+    "python.linting.enabled": false
+}

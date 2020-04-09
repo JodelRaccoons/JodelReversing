@@ -1,0 +1,30 @@
+@import "~ng-zorro-antd/input/style/mixin.less";
+.custom-copy-input {
+  input {
+    border-right: 0;
+    &:hover,
+    &:focus {
+      border-color: @input-border-color;
+      box-shadow: none;
+    }
+  }
+
+  .ant-input-group-addon {
+    transition: all 0.05s;
+    padding: 0;
+    line-height: 2;
+    &:last-child {
+      border-left: 1px solid @input-border-color;
+    }
+    &:hover {
+      .hover;
+    }
+    &:active {
+      .active;
+    }
+
+    .button-ify {
+      padding: 0 11px;
+    }
+  }
+}

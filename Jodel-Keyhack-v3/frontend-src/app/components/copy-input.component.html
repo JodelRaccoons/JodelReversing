@@ -1,0 +1,11 @@
+<nz-input-group
+  class="custom-copy-input"
+  [nzAddOnAfter]="addOnAfterIconTemplate"
+>
+  <input type="text" nz-input [ngModel]="value" readonly />
+</nz-input-group>
+<ng-template #addOnAfterIconTemplate>
+  <div class="button-ify" (click)="copy(value)">
+    <i nz-icon type="copy" theme="outline"></i>
+  </div>
+</ng-template>

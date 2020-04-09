@@ -1,7 +1,20 @@
-### How does the HMAC-Signing in Jodel work?
+## How does the HMAC-Signing in Jodel work?
 First of all read [this](https://en.wikipedia.org/wiki/HMAC)! It's important to understand what HMAC is used for in order to understand what Jodel is doing there.
 
-Hmac requires a key. Jodel stores this key not in plain text, as it would be way too easy to read it. They are storing it XORed with the APKs signature inside a shared object. (<apk>/lib/<arch>/libx.so). The signing inside the jodel application works as follows:
+Each version of the Jodel app has a version-specific HMAC key. It is used to sign requests, the signature is checked by the Jodel API server. HMAC (Keyed-Hash Message Authentication Code) is a mechanism that generates a signature of given data (in our case HTTP request data) in combination with a key. Without knowledge of the HMAC key, it is impossible to sign requests and therefore it is impossible to use the Jodel API.
+
+Since the HMAC key is an important measure to prevent attacks on the Jodel API, the HMAC key is well hidden in the application. Jodel follows best practices (see MASVS) and hides the key in a shared library bundled with the APK file. The name of the shared library responsible for generating the HMAC key is renamed in each build (<apk>/lib/<arch>/libX.so), determining which is the correct one is only possible based on file sizes:
+
+|  architecture 	|   size	|
+|---	|---	|
+|  x86 	|  194 KB 	|
+|   x86-64	|  219 KB 	|
+|   Arm	|   102 KB	|
+|   Arm64	|   199 KB	|
+
+(as of 09.04.2020, Jodel version 5.77.0, libb.so)
+
+The signing inside the jodel application works as follows:
 	
 The class `com.jodelapp.jodelandroidv3.api.HmacInterceptor` is responsible for the signing. It has three methods which refer to JNI:
 ```
@@ -88,3 +101,16 @@ int Java_com_jodelapp_jodelandroidv3_api_HmacInterceptor_sign(JNIEnv *env, jobje
 As of that, i wrote a python script which disassembles the shared object, collects the bytes and decrypts it (credits for the decryption magic to [cfib90](https://bitbucket.org/cfib90/ojoc-keyhack)). To make it look better i developed this keyhack with fancy angular gui.
 
 ---
+
+
+## How to get the key
+- lokalisieren der funktionen
+  - Funktionsnamen sind obfuskiert
+  - string suche nach (Ljava/lang/String;)Ljavax/crypto/Mac;
+  - xrefs auf (Ljava/lang/String;)Ljavax/crypto/Mac; finden, funktion ist sign()
+  - funktionslayout ist init, register, sign -> zwei funktionen weiter oben ist init() mit dem hmac key
+- Statische analyse und mir skript entschlüsseln
+  - Link zu skript
+- Native library weist 
+  - Java funktion für HMAC wird aufgerufen
+  - Frida-Skript auf gist.github.com

@@ -1,0 +1,131 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "my-project": {
+      "root": "",
+      "sourceRoot": "frontend-src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "less"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "frontend-dist",
+            "index": "frontend-src/index.html",
+            "main": "frontend-src/main.ts",
+            "polyfills": "frontend-src/polyfills.ts",
+            "tsConfig": "frontend-src/tsconfig.app.json",
+            "assets": [
+              "frontend-src/favicon.ico",
+              "frontend-src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
+            ],
+            "styles": [
+              "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "frontend-src/styles.less"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "frontend-src/environments/environment.ts",
+                  "with": "frontend-src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            },
+            "hmr": {
+              "fileReplacements": [
+                {
+                  "replace": "frontend-src/environments/environment.ts",
+                  "with": "frontend-src/environments/environment.hmr.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "my-project:build",
+            "proxyConfig": "frontend-src/proxy.conf.json"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "my-project:build:production"
+            },
+            "hmr": {
+              "hmr": true,
+              "browserTarget": "my-project:build:hmr"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "my-project:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "frontend-src/test.ts",
+            "polyfills": "frontend-src/polyfills.ts",
+            "tsConfig": "frontend-src/tsconfig.spec.json",
+            "karmaConfig": "frontend-src/karma.conf.js",
+            "styles": [
+              "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "frontend-src/styles.less"
+            ],
+            "scripts": [],
+            "assets": [
+              "frontend-src/favicon.ico",
+              "frontend-src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "frontend-src/tsconfig.app.json",
+              "frontend-src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "my-project"
+}
