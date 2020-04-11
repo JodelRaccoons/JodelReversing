@@ -1,7 +1,7 @@
 
 # Jodel Keyhack v2
 
-Tested with IDA 7.0 and Jodel 5.40.0
+Tested with IDA 7.0 and Jodel 5.77.0
 
 ### What this is
 This is just a small IDA script, extracting the HMAC key from the library and decoding it as [cfib90s](https://bitbucket.org/cfib90/) script was broken for me.
@@ -16,7 +16,7 @@ This script was developed and tested with IDA 7.0 but should also work on other 
 - Any version of the Jodel APK
 - **Installed idascript**
   - Clone the repo https://github.com/devttys0/idascript
-  - Run powershell as admin / bash as root and run the install.py using the Python version of IDA (C:\Python27\python.exe)
+  - `PS (Administrator) C:\Windows\system32> C:\Python27\python.exe .\install.py`
   - Follow the install script (enter absolute IDA path e.g. C:\Program Files\IDA 7.0)
 
 ### How to use
