@@ -14,10 +14,14 @@ This script was developed and tested with IDA 7.0 but should also work on other 
 ### Requirements
 - IDA installed on your PC (with Python support)
 - Any version of the Jodel APK
+- **idascript**
+  - Clone the repo https://github.com/devttys0/idascript
+  - Run powershell as admin / bash as root and run the install.py using the Python version of IDA (C:\Python27\python.exe)
+  - Follow the install script (enter absolute IDA path e.g. C:\Program Files\IDA 7.0)
 
 ### How to use
 - Clone this repo
-- Fire up IDA
+- Fire up IDA (with installed idascript)
 - Feed it with the latest libhmac.so (x86) (Isnt named libhmac.so anymore, just try the smallest x86 lib, as of today aroud 200kb) from the Jodel.apk
 - Wait for the analysis to finish
 - Hit <kbd>ALT</kbd>+<kbd>F7</kbd> or choose File -> Script File
