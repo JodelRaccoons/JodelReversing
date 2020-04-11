@@ -3,14 +3,13 @@
 ### The APK-File
 Only a few details here:
 - The app is most probably obfuscated using [DexGuard](https://www.guardsquare.com/en/products/dexguard)
+    - Heavy control-flow obfuscation by stub math operations
+    - Heavy method name obfuscation, method names are not human readable anymore, mostly special characters or weired white-spaces
 - Ressource names are scrambled and in raw apk (not packed in asrc file)
     - Filenames are in non-ASCII characters
     - Extracting the APK under windows os will result in errors as windows makes no difference between unicode 
     spaces like `U+0020` (Unicode space) and `U+00A0` (Unicode non-breaking space) and so on. This results in filename collisions and owerwriting of files.
     - Resource ids were mostly stripped out of the xml file, no chance of recovering them
-- The application itself (smali code) is obfuscated using dexguard. This includes:
-    - Heavy control-flow obfuscation by stub math operations
-    - Heavy method name obfuscation, method names are not human readable anymore, mostly special characters or weired white-spaces
 
 ### Unpacking / Repacking
 - Unpacking / repacking should work using latest version of [apktool](https://ibotpeaches.github.io/Apktool/) under linux-based OS
