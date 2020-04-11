@@ -31,3 +31,16 @@ This script was developed and tested with IDA 7.0 but should also work on other 
 - A file explorer should open, choose the `jodel.py` file
 - The IDA console should display the extracted HMAC key
 
+### Example output
+```
+---------------------------------------------------------------------------------------
+Python 2.7.16 
+IDAPython v1.7.0 final (serial 0) (c) The IDAPython Team <idapython@googlegroups.com>
+---------------------------------------------------------------------------------------
+Propagating type information...
+Function argument information has been propagated
+The initial autoanalysis has been finished.
+Derived key of length 40 from library, now decrypting it...
+Got raw key array: [197, 203, 181, 140, 145, 222, 202, 46, 132, 8, 28, 39, 128, 110, 2, 54, 48, 60, 135, 122, 112, 212, 13, 60, 13, 79, 125, 146, 167, 112, 245, 2, 204, 123, 182, 62, 163, 212, 37, 143]
+Got decrypted key: SzsuLtrabXwYuAqZoAmvFypvZdZrYydEOCqoORiy
+```
