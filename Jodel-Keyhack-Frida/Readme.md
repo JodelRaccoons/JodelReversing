@@ -15,7 +15,7 @@
 
 ##### Bring it to work:
 ```
-pip install frida  
+pip install frida frida-tools
 adb push frida-server-[latest]-android-[arch_of_your_phone] /data/local/tmp/ 
 adb shell
         cd /data/local/tmp
