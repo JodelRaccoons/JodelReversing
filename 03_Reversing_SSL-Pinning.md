@@ -1,6 +1,5 @@
 ### Bypass SSL-Pinning
-This script is for use with [frida](https://frida.re/). As Jodel is heavily obfuscated, hooking the Jodels enableSslPinning method is nearly impossible. 
-But: Jodel is using the `okhttp3.CertificatePinner$Pin` which utilizes `okio.ByteString#equals` to compare the certificates. By letting `equals` always return `true`, any ServerCertificate, provided by you will get accepted. 
+This script is for use with [frida](https://frida.re/). As Jodel is heavily obfuscated, bypassing the TLS pinning needs to be done a little different. Method names in the Jodel app are unicode characters which are not directly usable in frida. A possible workaround is shown below. Just copy & paste the unicode character method name of your current Jodel version in the script and run it. This also circumvents certificate validation. 
 
 ```
 import frida, sys, time
@@ -12,14 +11,14 @@ def on_message(message, data):
         print(message)
 
 jscode = """
-Java.perform(function () {
-	var ByteString = Java.use('okio.ByteString');
-	
-	ByteString.equals.overload('java.lang.Object').implementation = function(obj) {
-		send('SSLPinning bypassed!');
-		return true;
-	}
+Java.perform(function() {
+	var ByteString = Java.use('okhttp3.CertificatePinner');
 
+	console.log('OkHTTP 3.x Found');
+
+	ByteString['Ӏ'].overload('java.lang.String', 'java.util.List').implementation = function(b) {
+		console.log('OkHTTP 3.x check() called. Not throwing an exception.');
+	}
 });
 """
 
