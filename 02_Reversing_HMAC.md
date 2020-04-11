@@ -54,7 +54,7 @@ GET@/api/v3/user/config
 
 This could be the implementation of a queue. A signing request is passed and queued in a std::map<string,int>. The signing routine uses the values of the map to locate the signing request.
 
-#### private native synchronized byte[] sign(String sig, String method, byte[] payload);
+##### private native synchronized byte[] sign(String sig, String method, byte[] payload);
 The `sign()` method of the HmacInterceptor class performs the signing itself. It calls the native method  `sym.Java_com_jodelapp_jodelandroidv3_api_HmacInterceptor_sign`. It takes three arguments:
 ```
 sig: The APKs SHA1 signature: a4a8d4d7b09736a0f65596a868cc6fd620920fb0 (should be always this value!)
@@ -83,17 +83,17 @@ int Java_com_jodelapp_jodelandroidv3_api_HmacInterceptor_sign(JNIEnv *env, jobje
 There are multiple methods extracting the HMAC key:
 
 #### Good old static way
-	- Extracting the hmac-key the static way requires the hmac-signing library (as the base key is in there) and some decryption magic. There are several projects doing this, some of them work, some dont. The ones i'm aware of are: 
-		- [ojoc-keyhack by cfib90](https://bitbucket.org/cfib90/ojoc-keyhack) (the original one, utilizing objdump)
-		- [Jodel-Keyhack-v2](https://github.com/Unbrick/Jodel-Keyhack-v2) utilizing IDA Pro 7.x
-		- [Jodel-Keyhack-v3](https://github.com/Unbrick/Jodel-Keyhack-v3) this project, utilizing radare2
+- Extracting the hmac-key the static way requires the hmac-signing library (as the base key is in there) and some decryption magic. There are several projects doing this, some of them work, some dont. The ones i'm aware of are: 
+	- [ojoc-keyhack by cfib90](https://bitbucket.org/cfib90/ojoc-keyhack) (the original one, utilizing objdump)
+	- [Jodel-Keyhack-v2](https://github.com/JodelRaccoons/JodelReversing/blob/master/Jodel-Keyhack-v2) utilizing IDA Pro 7.x
+	- [Jodel-Keyhack-v3](https://github.com/JodelRaccoons/JodelReversing/blob/master/Jodel-Keyhack-v3) this project, utilizing radare2
 - Dynamic (runtime hooking ftw!)
-	- As the native library is NOT implementing their own HMAC-Signing function, they are using the one javax.crypto classes. Hooking them using librarys like frida is [pretty easy](https://gist.github.com/Unbrick/c7151e44c4abf37cc0a6bc9d850b6a4a) (See comment for instructions)
+	- As the native library is NOT implementing their own HMAC-Signing function, they are using the one javax.crypto classes. Hooking them using librarys like frida is [pretty easy](https://github.com/JodelRaccoons/JodelReversing/tree/master/Jodel-Keyhack-Frida) (See Readme for instructions)
 
 ---
 
 
-As of that, i wrote a python script which disassembles the shared object, collects the bytes and decrypts it (credits for the decryption magic to [cfib90](https://bitbucket.org/cfib90/ojoc-keyhack)). To make it look better i developed this keyhack with fancy angular gui.
+As of that, i wrote a python script which disassembles the shared object, collects the bytes and decrypts it (credits for the decryption logic to [cfib90](https://bitbucket.org/cfib90/ojoc-keyhack)), the python implementation of the decryption routine was coded by tm. To make it look better i developed this keyhack with fancy angular gui.
 
 ---
 
@@ -108,4 +108,4 @@ As of that, i wrote a python script which disassembles the shared object, collec
   - Link zu skript
 - Native library weist 
   - Java funktion für HMAC wird aufgerufen
-  - Frida-Skript auf gist.github.com
+
