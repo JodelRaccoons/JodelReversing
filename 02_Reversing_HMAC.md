@@ -80,15 +80,18 @@ int Java_com_jodelapp_jodelandroidv3_api_HmacInterceptor_sign(JNIEnv *env, jobje
 ---
 
 ### Extracting the HMAC-Key
+
 There are multiple methods extracting the HMAC key:
 
-#### Good old static way
+ Good old static way
 - Extracting the hmac-key the static way requires the hmac-signing library (as the base key is in there) and some decryption magic. There are several projects doing this, some of them work, some dont. The ones i'm aware of are: 
 	- [ojoc-keyhack by cfib90](https://bitbucket.org/cfib90/ojoc-keyhack) (the original one, utilizing objdump)
 	- [Jodel-Keyhack-v2](https://github.com/JodelRaccoons/JodelReversing/blob/master/Jodel-Keyhack-v2) utilizing IDA Pro 7.x
 	- [Jodel-Keyhack-v3](https://github.com/JodelRaccoons/JodelReversing/blob/master/Jodel-Keyhack-v3) this project, utilizing radare2
-- Dynamic (runtime hooking ftw!)
-	- As the native library is NOT implementing their own HMAC-Signing function, they are using the one javax.crypto classes. Hooking them using librarys like frida is [pretty easy](https://github.com/JodelRaccoons/JodelReversing/tree/master/Jodel-Keyhack-Frida) (See Readme for instructions)
+	
+#### Dynamic (runtime hooking ftw!)
+
+- As the native library is NOT implementing their own HMAC-Signing function, they are using the one javax.crypto classes. Hooking them using librarys like frida is [pretty easy](https://github.com/JodelRaccoons/JodelReversing/tree/master/Jodel-Keyhack-Frida) (See Readme for instructions)
 
 ---
 
