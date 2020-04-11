@@ -12,19 +12,22 @@ As the key is somehow XORed with a scrambled version of the APKs signature the d
 This script was developed and tested with IDA 7.0 but should also work on other versions.
 
 ### Requirements
-- IDA installed on your PC (with Python support)
+- IDA Pro version 7.0 or higher
 - Any version of the Jodel APK
-- **idascript**
+- **Installed idascript**
   - Clone the repo https://github.com/devttys0/idascript
   - Run powershell as admin / bash as root and run the install.py using the Python version of IDA (C:\Python27\python.exe)
   - Follow the install script (enter absolute IDA path e.g. C:\Program Files\IDA 7.0)
 
 ### How to use
-- Clone this repo
-- Fire up IDA (with installed idascript)
-- Feed it with the latest libhmac.so (x86) (Isnt named libhmac.so anymore, just try the smallest x86 lib, as of today aroud 200kb) from the Jodel.apk
-- Wait for the analysis to finish
-- Hit <kbd>ALT</kbd>+<kbd>F7</kbd> or choose File -> Script File
-- Choose the script and let it run
-- Output should be printed in IDA console
+- Clone this repo or download the `jodel.py` and `decrypt.py`
+- Fire up IDA 7.0 or later **(with installed idascript)**
+- Feed it with the latest libhmac.so (x86)
+  - Open the APK with 7-Zip or simmilar
+  - Extract the file /lib/x86/libX.so where X is a random lowercase character
+  - The correct library file is around 200 kb
+- Wait for the initial IDA analysis to finish
+- Hit <kbd>ALT</kbd>+<kbd>F7</kbd> or choose `File -> Script File`
+- A file explorer should open, choose the `jodel.py` file
+- The IDA console should display the extracted HMAC key
 
