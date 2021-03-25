@@ -10,7 +10,7 @@ idna==2.8
 itsdangerous==1.1.0
 Jinja2==2.10.1
 -e git+https://github.com/Unbrick/jodel_api.git@be12ddcabd59b9fcd9ad08c1ff703a05b1d08b00#egg=jodel_api
-lxml==4.6.2
+lxml==4.6.3
 MarkupSafe==1.1.0
 mock==2.0.0
 pbr==5.1.1
