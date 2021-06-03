@@ -16,10 +16,21 @@ Java.perform(function() {
 
 	console.log('OkHTTP 3.x Found');
 
-	ByteString['Ӏ'].overload('java.lang.String', 'java.util.List').implementation = function(b) {
+	ByteString['Ι'].overload('java.lang.String', 'kotlin.jvm.functions.Function0').implementation = function(b) {
 		console.log('OkHTTP 3.x check() called. Not throwing an exception.');
 	}
 });
+"""
+
+pid = frida.get_usb_device().spawn('com.tellm.android.app')
+frida.get_usb_device().resume(pid)
+#time.sleep(1) #Without it Java.perform silently fails
+session = frida.get_usb_device().attach(pid)
+script = session.create_script(jscode)
+script.on('message', on_message)
+print('Running...')
+script.load()
+sys.stdin.read()
 """
 
 pid = frida.get_usb_device().spawn('com.tellm.android.app')
