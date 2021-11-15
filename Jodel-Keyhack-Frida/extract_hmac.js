@@ -1,12 +1,7 @@
-Java.perform(function () {
-    // Class of the HMAC Implementation 
-    var Mac = Java.use('javax.crypto.Mac');
-    // Whenever Mac.init(Key key); is called
-    Mac.init.overload('java.security.Key').implementation = function (v) {
-	
-		var bArray = v.getEncoded();
-		
-		const extraByteMap = [ 1, 1, 1, 1, 2, 2, 3, 0 ];
+const DEBUG = false;
+
+function stringFromByteArray(bArray) {
+    const extraByteMap = [ 1, 1, 1, 1, 2, 2, 3, 0 ];
 		var count = bArray.length;
 		var str = "";
 		
@@ -32,9 +27,30 @@ Java.perform(function () {
 		  
 		  str += String.fromCharCode(ch);
 		}
-	
-		console.log("HMAC-Key: "+str);
+        return str;
+}
+
+Java.perform(function () {
+
+    var alreadyPrinted = false;
+
+    Java.use('com.jodelapp.jodelandroidv3.JodelApp').onCreate.overload().implementation = function() {
+        this.onCreate();
+        console.log("\r\nVersion: " + this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName.value);
+    }
+
+    Java.use('javax.crypto.Mac').init.overload('java.security.Key').implementation = function (v) {
+		if (!alreadyPrinted) {
+            console.log("HMAC-Key: " + stringFromByteArray(v.getEncoded()));
+            alreadyPrinted = true;
+        }
 		
 		return this.init(v);
     };
+
+    if (DEBUG)
+        Java.use('javax.crypto.Mac').doFinal.overload('[B').implementation = function(toBeHmaced) {
+            console.log("To be HMACed: " + stringFromByteArray(toBeHmaced));
+            return this.doFinal(toBeHmaced);
+        }
 });
