@@ -1,6 +1,6 @@
 # Jodel Keyhack using Frida
 
-##### Requirements: 
+#### Requirements: 
 
 - python
 - pip
@@ -8,12 +8,12 @@
 - root on Android device
 - SELinux permissive kernel!
 
-##### Download and references
+#### Download and references
 [Frida for Android reference](https://www.frida.re/docs/android/)
 [frida-server releases](https://github.com/frida/frida/releases)
 - Download frida-server-[latest]-android-[arch_of_your_phone].xz and unpack
 
-##### Bring it to work:
+#### Bring it to work:
 ```
 pip install frida frida-tools
 adb push frida-server-[latest]-android-[arch_of_your_phone] /data/local/tmp/ 
@@ -25,7 +25,7 @@ adb shell
 
 ```
 
-#### Run it
+### Run it
 To begin, start Jodel on your Android device. Afterwards start the python script:
 
 ```bash
@@ -53,3 +53,9 @@ Version: 7.25.8
 HMAC-Key: mNnKgrObHerZMdpPffBMbKvYZxNDpQYGDWzzsyjH
 ```
 
+### iOS version
+To also support iOS versions, a new script has been added. Run it with:
+
+```bash
+$ frida -U -l extract_hmac_ios.js -n Jodel
+```
