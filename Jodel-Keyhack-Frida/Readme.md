@@ -28,26 +28,28 @@ adb shell
 #### Run it
 To begin, start Jodel on your Android device. Afterwards start the python script:
 
-```
-JodelReversing\Jodel-Keyhack-Frida> python extract_hmac.py
-Running...
-HMAC-Key: SzsuLtrabXwYuAqZoAmvFypvZdZrYydEOCqoORiy
+```bash
+$ python extract_hmac.py
+Version: 7.25.8
+HMAC-Key: mNnKgrObHerZMdpPffBMbKvYZxNDpQYGDWzzsyjH
 ```
 
 Or run the javascript file directly with frida:
 
-```
-JodelReversing\Jodel-Keyhack-Frida> frida -U -l extract_hmac.js -f com.tellm.android.app --no-pause
+```bash
+frida -U -l extract_hmac.js -f com.tellm.android.app --no-pause
      ____
-    / _  |   Frida 12.8.20 - A world-class dynamic instrumentation toolkit
+    / _  |   Frida 15.0.8 - A world-class dynamic instrumentation toolkit
    | (_| |
     > _  |   Commands:
    /_/ |_|       help      -> Displays the help system
    . . . .       object?   -> Display information about 'object'
    . . . .       exit/quit -> Exit
    . . . .
-   . . . .   More info at https://www.frida.re/docs/home/
+   . . . .   More info at https://frida.re/docs/home/
 Spawned `com.tellm.android.app`. Resuming main thread!
-[Pixel::com.tellm.android.app]-> HMAC-Key: SzsuLtrabXwYuAqZoAmvFypvZdZrYydEOCqoORiy
+[Pixel::com.tellm.android.app]->
+Version: 7.25.8
+HMAC-Key: mNnKgrObHerZMdpPffBMbKvYZxNDpQYGDWzzsyjH
 ```
 
