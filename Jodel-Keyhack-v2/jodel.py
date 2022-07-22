@@ -3,20 +3,21 @@ from idautils import *
 from idaapi import *
 from idc import *
 import sys, traceback
-import idascript
 import decrypt
 import re
+import ida_hexrays
 
-FUNCTION_PATTERN = 'HmacInterceptor_init'
+FUNCTION_PATTERN = 'Java_com_jodelapp_jodelandroidv3_api_HmacInterceptor_init'
 
-REGEX_EXTRACT_BYTES = r'(?<=[^ ] )\d\w*'
+#REGEX_EXTRACT_BYTES = r'(?<=[^ ] )\d\w*'
+REGEX_EXTRACT_BYTES = r'#0x\d\w*'
 REGEX_EXTRACT_LOCATION = r'(?<=_)\w*'
 
 
 def locate_function():
 	for segea in Segments():
-		for funcea in Functions(segea, SegEnd(segea)):
-			functionName = GetFunctionName(funcea)
+		for funcea in Functions(segea, idc.get_segm_end(segea)):
+			functionName = idc.get_func_name(funcea)
 			if FUNCTION_PATTERN in functionName:
 				return funcea
 	return None
@@ -32,22 +33,31 @@ def get_disassembly(funcea):
 
 def extract_bytes():
 	instr = {}
-	for i in get_disassembly(locate_function()):
-		if 'mov' in i and 'eax' in i:
-			raw_value = re.findall(REGEX_EXTRACT_BYTES, i)
-			raw_location = re.findall(REGEX_EXTRACT_LOCATION, i)
-			value = raw_value[1].replace('h', '').strip()
-			if len(value) <= 1 or (8 > len(value) > 3):
-				value = '0' + value
-			if len(value) > 8 and value.startswith('0'):
-				value = value[1:]
-			instr[int(raw_location[0], 16)] = rev(value)
+	target_function = locate_function()
+	print("Found function with pattern ",FUNCTION_PATTERN, " at ",  target_function)
+	# get decompiled function
+	decompiled_function = ida_hexrays.decompile(target_function)
+	# get result as string and only match lines containing 0x
+	decompiled_instructions = [instr for instr in str(decompiled_function).split("\n") if '0x' in instr]
+	# remove prefixes in lines
+	decompiled_instructions = [re.sub(r'(byte_|unk_|dword_)', '', instr) for instr in decompiled_instructions]
+	# remove whitespaces
+	decompiled_instructions = [re.sub(r'(\s)', '', instr) for instr in decompiled_instructions]
+	# remove semicolons
+	decompiled_instructions = [re.sub(r'(;)', '', instr) for instr in decompiled_instructions]
+	# remove 0x prefix
+	decompiled_instructions = [re.sub(r'(0x)', '', instr) for instr in decompiled_instructions]
 
-	sorted_keys = ''.join(OrderedDict(sorted(instr.items())).values())
+	instructions_dict = dict((int(instr.split("=")[0], 16), rev(str(instr.split("=")[1]))) for instr in decompiled_instructions)
+
+	sorted_keys = ''.join(OrderedDict(sorted(instructions_dict.items())).values())
+
+	print(sorted_keys)
 
 	import decrypt
 	if len(sorted_keys) != decrypt.CLIENT_SECRET_SIZE*2:
 		print("Keysize is {}, should be {} exiting".format(len(sorted_keys), decrypt.CLIENT_SECRET_SIZE*2))
+		return None
 	return [int(sorted_keys[x:x + 2], 16) for x in range(0, len(sorted_keys), 2)]
 
 
@@ -61,12 +71,11 @@ def rev(a):
 if __name__ == '__main__':
 	try:
 		key = extract_bytes()
-		print('Derived key of length {} from library, now decrypting it...'.format(len(key)))
-		print('Got raw key array: {}'.format(key))
-		_result = decrypt.decrypt(key)
-		print('Got decrypted key: {}'.format(_result))
+		if key:
+			print('Derived key of length {} from library, now decrypting it...'.format(len(key)))
+			print('Got raw key array: {}'.format(key))
+			_result = decrypt.decrypt(key)
+			print('Got decrypted key: {}'.format(_result))
 	except Exception as e:
 		print('Exception: {}'.format(e))
 		print(traceback.print_exc(file=sys.stdout))
-	finally:
-		idascript.exit()
