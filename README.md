@@ -4,8 +4,8 @@ Some details about reversing the Jodel-App
 This repository consists of different parts. 
 
 #### Jodel-Keyhack-Frida
-For one part there are three different methods to extract the HMAC-Key from the Jodel APK. 
-The most reliable method as of my tests is the [JodelKeyhack-Frida](https://github.com/JodelRaccoons/JodelReversing/tree/master/Jodel-Keyhack-Frida) but it requires a rooted Android Device with SELinux set to permissive and [frida-server](https://github.com/frida/frida/releases) installed.
+There are three different methods to extract the HMAC-Key from the Jodel APK. 
+The most reliable method as of my tests is the [JodelKeyhack-Frida](https://github.com/JodelRaccoons/JodelReversing/tree/master/Jodel-Keyhack-Frida) but it requires a rooted Android Device with SELinux set to permissive and [frida-server](https://github.com/frida/frida/releases) installed (Android) or a Jailbroken iDevice.
 
 #### Jodel-Keyhack-v2
 If Jodel-Keyhack-Frida is not an option for you, you could try the Jodel-Keyhack-v2 which is based on IDA Pro and their Python scripting interface. 
