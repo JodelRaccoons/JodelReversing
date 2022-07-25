@@ -1,7 +1,40 @@
 
 # Jodel Keyhack v2
 
-Tested with IDA 7.7 (hexrays decompiler required) and Jodel 8.0.1 arm64-v8a
+Tested with 
+- IDA 7.7
+  - Python3 support is required
+  - The Android version requires a hexrays decompiler license
+- Jodel 8.0.1 arm64-v8a (Android) 
+- Jodel version 4.139 and version 7.51 (iOS)
+
+## iOS
+Just a small script to use with IDA to extract the HMAC key from a decrypted binary. The key extraction the script performs is pretty straightforward:
+- Locating the `+[JDLCrypto convertNSStringToCString:]` function
+- Decompile the function AFTER the `+[JDLCrypto convertNSStringToCString:]` function (usually `sub_10004F2E8` or simmilar), here a reference to the XORed key is present
+- Look for the first MOV instruction (which contains the reference to the XORed key) and extract the address of the XORed key
+- XOR the key with the static value `ed25b40c912702e08c2b2a06eae635e03f475cc3` (extracted from the app)
+
+#### How to use
+- Save the `jodel_ios.py` file somewhere to your local drive
+- Fire up IDA and load a **DECRYPTED** Jodel binary into it
+- Wait for the initial IDA analysis to finish
+- Hit <kbd>ALT</kbd>+<kbd>F7</kbd> or choose `File -> Script File`
+  - Choose the `jodel_ios.py` file
+- Profit
+
+Running the script should provide the following output:
+
+```
+[...]
+Found function  +[JDLCrypto convertNSStringToCString:]  at  4295128280
+Found function with pattern convertNSStringToCString at 4295128424
+Found function  +[JDLCrypto convertNSStringToCString:]  at  4295128280
+Got raw key: 3c21795415577f264e4b5b505f4413677d2559206436607f16062d5e5d7c235d552b40515f3a2f60
+Decrypted key: YEKawcOEwzigovvWEFkBVWPIsgHhnIFmfMtfjYLS
+```
+
+## Android
 
 ### What this is
 This is just a small IDA script, extracting the HMAC key from the library and decoding it as [cfib90s](https://bitbucket.org/cfib90/) script was broken for me.
