@@ -4,6 +4,10 @@ In the following, bypassing SSL/TLS-Pinning within the Jodel app is described.
 ### Android
 This script is for use with [frida](https://frida.re/). As Jodel is heavily obfuscated, bypassing the TLS pinning needs to be done a little different. Method names in the Jodel app are unicode characters which are not directly usable in frida. A possible workaround is shown below. Just copy & paste the unicode character method name of your current Jodel version in the script and run it. This also circumvents certificate validation. 
 
+Due to the obfuscation, finding the correct class and method is not always easy. Therefore you might want to try to search for the strings contained in the method, e.g. `unsupported hashAlgorithm: ` (see [here](https://github.com/square/okhttp/blob/3ad1912f783e108b3d0ad2c4a5b1b89b827e4db9/okhttp/src/jvmMain/kotlin/okhttp3/CertificatePinner.kt#L177)). Just check the source file for more strings if something changes over time. 
+
+The method can be easily identified as it is the only method accepting a `String` and `Function0` (Kotlin) as parameters.
+
 ```
 import frida, sys, time
 
@@ -14,15 +18,12 @@ def on_message(message, data):
         print(message)
 
 jscode = """
-Java.perform(function() {
-	var ByteString = Java.use('okhttp3.CertificatePinner');
-
-	console.log('OkHTTP 3.x Found');
-
-	ByteString['Ι'].overload('java.lang.String', 'kotlin.jvm.functions.Function0').implementation = function(b) {
-		console.log('OkHTTP 3.x check() called. Not throwing an exception.');
-	}
-});
+Java.perform(function () {
+    let b = Java.use("okhttp3.b");
+    b["b"].overload('java.lang.String', 'kotlin.jvm.functions.Function0').implementation = function (str, function0) {
+        console.log('OkHTTP 3.x check() called. Not throwing an exception.');
+    };
+})
 """
 
 pid = frida.get_usb_device().spawn('com.tellm.android.app')
