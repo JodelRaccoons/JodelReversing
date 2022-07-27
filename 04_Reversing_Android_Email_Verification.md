@@ -32,7 +32,7 @@ Accept-Encoding: gzip, deflate
 
 - Response simply contains confirmation of success
 
-```
+```HTTP
 HTTP/2 200 OK
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
@@ -71,7 +71,7 @@ oobCode=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 - The code needs to be redeemed with the corresponding mail address
 - Creates a new Jodel Firebase user 
 
-```
+```HTTP
 POST /identitytoolkit/v3/relyingparty/emailLinkSignin?key=AIzaSyDFUC30aJbUREs-vKefE6QmvoVL0qqOv60 HTTP/2
 Host: www.googleapis.com
 Content-Type: application/json
@@ -92,7 +92,7 @@ Accept-Encoding: gzip, deflate
 - Response contains `idToken` as well as `refreshToken`
 - Maybe the `idToken` can already be used to register a Jodel user and save us the token refresh?
 
-```
+```HTTP
 HTTP/2 200 OK
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
@@ -123,7 +123,7 @@ X-Content-Type-Options: nosniff
 - Not sure whether this step is neccessary
 - Token refresh is performed using the `refreshToken` provided in the previous response
 
-```
+```HTTP
 POST /v1/token?key=AIzaSyDFUC30aJbUREs-vKefE6QmvoVL0qqOv60 HTTP/2
 Host: securetoken.googleapis.com
 Content-Type: application/json
@@ -144,7 +144,7 @@ Accept-Encoding: gzip, deflate
 - Response contains `access_token` and `id_token` which happened to be identical
 - `refresh_token` can be used to get fresh access tokens for the Firebase user
 
-```
+```HTTP
 HTTP/2 200 OK
 Pragma: no-cache
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
@@ -176,7 +176,7 @@ X-Content-Type-Options: nosniff
 - Request requires HMAC signing
 
 
-```
+```HTTP
 POST /api/v2/users/ HTTP/1.1
 Host: api.jodelapis.com
 X-Client-Type: android_x.x.x
@@ -223,7 +223,7 @@ Connection: close
 - User is **NOT** blocked
 - `access_` and `refresh_token` can be used for further API requests as usual
 
-```
+```HTTP
 HTTP/1.1 200 OK
 Server: nginx/1.13.12 (this version is from 2018 with HIGH CVEs (CVE-2021-23017)??? might consider patching...)
 Content-Type: application/json; charset=utf-8
