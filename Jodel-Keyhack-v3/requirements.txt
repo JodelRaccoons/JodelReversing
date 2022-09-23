@@ -14,7 +14,7 @@ lxml==4.9.1
 MarkupSafe==1.1.0
 mock==2.0.0
 pbr==5.1.1
-protobuf==3.15.0
+protobuf==3.18.3
 pyaxmlparser==0.3.13
 pycodestyle==2.4.0
 r2pipe==1.2.0
