@@ -1,7 +1,7 @@
 -e git+https://github.com/krokofant/apk-signature-verify.git@215b9a86979eb8e2a9ff97b7a8758e70ee361345#egg=apkverify
 asn1crypto==0.24.0
 autopep8==1.4.3
-certifi==2018.11.29
+certifi==2022.12.7
 chardet==3.0.4
 Click==7.0
 Flask==1.0.2
